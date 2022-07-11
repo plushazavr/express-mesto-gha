@@ -2,7 +2,7 @@
   "name": "express-mesto-gha",
   "author": "Kazantseva Ekaterina",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint .",
@@ -19,8 +19,14 @@
   },
   "homepage": "https://github.com/plushazavr/express-mesto-gha#readme",
   "dependencies": {
-    "eslint": "^8.19.0",
+    "body-parser": "^1.20.0",
+    "express": "^4.18.1",
+    "mongoose": "^6.4.4"
+  },
+  "devDependencies": {
+    "eslint": "^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.26.0"
+    "eslint-plugin-import": "^2.25.2",
+    "nodemon": "^2.0.19"
   }
 }
