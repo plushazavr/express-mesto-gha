@@ -1,14 +1,12 @@
 const User = require('../models/user');
 const StatusCodes = require('../utils/utils');
 
-// возвращает всех пользователей
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send({ data: users }))
     .catch(() => res.status(StatusCodes.SERVER_ERROR).send({ message: 'На сервере произошла ошибка' }));
 };
 
-// возвращает пользователя по _id
 module.exports.getUserById = (req, res) => {
   User.findById(req.params.userId)
     .then((user) => {
@@ -27,7 +25,6 @@ module.exports.getUserById = (req, res) => {
     });
 };
 
-// создаёт пользователя
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
 
@@ -42,7 +39,6 @@ module.exports.createUser = (req, res) => {
     });
 };
 
-// обновляет профиль
 module.exports.updateProfile = (req, res) => {
   const { name, about } = req.body;
 
@@ -63,7 +59,6 @@ module.exports.updateProfile = (req, res) => {
     });
 };
 
-// обновляет аватар
 module.exports.updateAvatar = (req, res) => {
   const { avatar } = req.body;
 

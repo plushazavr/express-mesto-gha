@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const StatusCodes = require('./utils/utils');
 
-// подключаемся к серверу mongo
+// подключаемся к серверу
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -21,7 +21,7 @@ app.use(express.urlencoded({
 
 app.use((req, res, next) => {
   req.user = {
-    _id: '62cbd959a4ab1adc1b63d066', // вставьте сюда _id созданного в предыдущем пункте пользователя
+    _id: '62cbd959a4ab1adc1b63d066',
   };
   next();
 });

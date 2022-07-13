@@ -1,14 +1,12 @@
 const Card = require('../models/card');
 const StatusCodes = require('../utils/utils');
 
-// возвращает все карточки
 module.exports.getCards = (req, res) => {
   Card.find({})
     .then((cards) => res.send({ data: cards }))
     .catch(() => res.status(StatusCodes.SERVER_ERROR).send({ message: 'На сервере произошла ошибка' }));
 };
 
-// создаёт карточку
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
   const owner = req.user._id;
@@ -24,7 +22,6 @@ module.exports.createCard = (req, res) => {
     });
 };
 
-// удаляет карточку по _id
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
@@ -43,7 +40,6 @@ module.exports.deleteCard = (req, res) => {
     });
 };
 
-// ставит лайк карточке
 module.exports.likeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
@@ -66,7 +62,6 @@ module.exports.likeCard = (req, res) => {
     });
 };
 
-// убрать лайк с карточки
 module.exports.dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
