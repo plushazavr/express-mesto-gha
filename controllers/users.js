@@ -30,9 +30,12 @@ module.exports.login = (req, res, next) => {
         .send({ token });
     })
     .catch((err) => {
-      throw new UnauthorizedError(`${err.message}`);
-    })
-    .catch(next);
+      if (err.name === 'Error') {
+        next(new UnauthorizedError('Некорректные данные почты или пароля'));
+        return;
+      }
+      next(err);
+    });
 };
 
 module.exports.getUsers = (req, res, next) => {
@@ -45,17 +48,17 @@ module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError(StatusMessages.NOT_FOUND);
+        next(new NotFoundError('Данные пользователя не найдены'));
       }
       res.send(user);
     })
     .catch((err) => {
-      if (err.name === ErrorTypes.CAST) {
-        throw new BadRequestError(StatusMessages.INVALID_ID);
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Некорректный id карточки'));
+        return;
       }
       next(err);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.getUserById = (req, res, next) => {
@@ -67,12 +70,12 @@ module.exports.getUserById = (req, res, next) => {
       res.send(user);
     })
     .catch((err) => {
-      if (err.name === ErrorTypes.CAST) {
-        throw new BadRequestError(StatusMessages.INVALID_ID);
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Некорректный id карточки'));
+        return;
       }
       next(err);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -108,20 +111,21 @@ module.exports.updateProfile = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError(StatusMessages.NOT_FOUND);
+        throw new NotFoundError('Запрашиваемый пользователь не найден');
       }
       res.send(user);
     })
     .catch((err) => {
-      if (err.name === ErrorTypes.CAST) {
-        throw new BadRequestError(StatusMessages.INVALID_ID);
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Некорректный id пользователя'));
+        return;
       }
       if (err.name === ErrorTypes.VALIDATION) {
-        throw new BadRequestError(`Переданы некорректные данные при обновлении профиля: ${err}`);
+        next(new BadRequestError(`Переданы некорректные данные при обновлении профиля: ${err}`));
+        return;
       }
       next(err);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.updateAvatar = (req, res, next) => {
@@ -130,18 +134,19 @@ module.exports.updateAvatar = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError(StatusMessages.NOT_FOUND);
+        throw new NotFoundError('Запрашиваемый пользователь не найден');
       }
       res.send(user);
     })
     .catch((err) => {
-      if (err.name === ErrorTypes.CAST) {
-        throw new BadRequestError(StatusMessages.INVALID_ID);
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Некорректная ссылка'));
+        return;
       }
-      if (err.name === ErrorTypes.VALIDATION) {
-        throw new BadRequestError(`Переданы некорректные данные при обновлении аватара: ${err}`);
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Некорректный id пользователя'));
+        return;
       }
       next(err);
-    })
-    .catch(next);
+    });
 };

@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
   } catch (err) {
     throw new UnauthorizedError(StatusMessages.UNAUTHORIZED);
   }
-  req.user = payload; // записываем пейлоад в объект запроса
+  req.user = payload;
 
-  next(); // пропускаем запрос дальше
+  next();
 };
