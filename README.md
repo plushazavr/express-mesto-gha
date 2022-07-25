@@ -1,18 +1,18 @@
 [![Tests for sprint 13](https://github.com/plushazavr/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/plushazavr/express-mesto-gha/actions/workflows/tests-13-sprint.yml) [![Tests for sprint 14](https://github.com/plushazavr/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/plushazavr/express-mesto-gha/actions/workflows/tests-14-sprint.yml)
-# Проект Mesto фронтенд + бэкенд
 
+# Бэкенд проекта Место
 
+## Функционал:
 
 ```
+GET /users — возвращает всех пользователей из базы;
+GET /users/:userId — возвращает пользователя по _id;
+POST /users — создаёт пользователя с переданными в теле запроса name, about и avatar.
+Роуты для карточек:
 
-
-## Директории
-
-`/routes` — папка с файлами роутера  
-`/controllers` — папка с файлами контроллеров пользователя и карточки   
-`/models` — папка с файлами описания схем пользователя и карточки  
-  
-Остальные директории вспомогательные, создаются при необходимости разработчиком
+GET /cards — возвращает все карточки из базы;
+POST /cards — создаёт карточку с переданными в теле запроса name и link, устанавливает поле owner для карточки;
+DELETE /cards/:cardId — удаляет карточку по _id.
 
 ## Запуск проекта
 
