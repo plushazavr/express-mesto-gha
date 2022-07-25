@@ -15,7 +15,9 @@ const validateSignup = celebrate({
     password: Joi.string().required().min(8),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().custom(isUrl),
+    avatar: Joi.string().regex(
+      /^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*/,
+    ),
   }),
 });
 
@@ -41,7 +43,7 @@ const validateProfileUpdate = celebrate({
 
 const validateAvatarUpdate = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required().custom(isUrl),
+    avatar: Joi.string().required().regex(/^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*/),
   }),
 });
 

@@ -7,7 +7,6 @@ const StatusCodes = require('../utils/status-codes');
 const StatusMessages = require('../utils/status-messages');
 const {
   BadRequestError,
-  UnauthorizedError,
   NotFoundError,
   ConflictError,
 } = require('../errors/index-err');
@@ -29,13 +28,7 @@ module.exports.login = (req, res, next) => {
       })
         .send({ token });
     })
-    .catch((err) => {
-      if (err.name === 'Error') {
-        next(new UnauthorizedError('Некорректные данные почты или пароля'));
-        return;
-      }
-      next(err);
-    });
+    .catch(next);
 };
 
 module.exports.getUsers = (req, res, next) => {
@@ -50,7 +43,7 @@ module.exports.getCurrentUser = (req, res, next) => {
       if (!user) {
         next(new NotFoundError('Данные пользователя не найдены'));
       }
-      res.send(user);
+      return res.send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -95,6 +88,7 @@ module.exports.createUser = (req, res, next) => {
         .catch((err) => {
           if (err.name === ErrorTypes.MONGO && err.code === StatusCodes.MONGO_ERROR) {
             next(new ConflictError(StatusMessages.CONFLICT));
+            return;
           }
           if (err.name === ErrorTypes.VALIDATION) {
             next(new BadRequestError(`Переданы некорректные данные при создании пользователя: ${err}`));
