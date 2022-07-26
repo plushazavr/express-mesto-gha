@@ -41,7 +41,7 @@ module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        next(new NotFoundError('Данные пользователя не найдены'));
+        return next(new NotFoundError('Данные пользователя не найдены'));
       }
       return res.send(user);
     })
